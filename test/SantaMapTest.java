@@ -6,24 +6,22 @@ import static org.junit.Assert.assertThat;
 public class SantaMapTest {
 
     @Test
-    public void whenSantaNavigatesEast_santaHasVisitedTwoUniquePlaces()
-    {
+    public void whenSantaNavigatesEast_santaHasVisitedTwoUniquePlaces() {
         SantaMap santaMap = new SantaMap();
         santaMap.moveEast();
         assertThat(santaMap.uniquePlaces(), is(2));
     }
 
     @Test
-    public void whenSantaNavigatesEastAndThenWest_santaHasOnlyVisitedTwoUniquePlaces()
-    {
+    public void whenSantaNavigatesEastAndThenWest_santaHasOnlyVisitedTwoUniquePlaces() {
         SantaMap santaMap = new SantaMap();
         santaMap.moveEast();
         santaMap.moveWest();
         assertThat(santaMap.uniquePlaces(), is(2));
     }
+
     @Test
-    public void whenSantaNavigatesEastAndThenWestTwice_santaHasVisitedThreeUniquePlaces()
-    {
+    public void whenSantaNavigatesEastAndThenWestTwice_santaHasVisitedThreeUniquePlaces() {
         SantaMap santaMap = new SantaMap();
         santaMap.moveEast();
         santaMap.moveWest();
@@ -31,9 +29,18 @@ public class SantaMapTest {
         assertThat(santaMap.uniquePlaces(), is(3));
     }
 
+    @Test
+    public void whenSantaNavigatesNorth_andThenSouth_santaHasOnlyVisitedTwoPlaces() {
+        SantaMap santaMap = new SantaMap();
+        santaMap.moveNorth();
+        santaMap.moveSouth();
+        assertThat(santaMap.uniquePlaces(), is(2));
+    }
+
     public static class SantaMap {
-        private static class Location
-        {
+
+
+        private static class Location {
             private Location north;
             private Location south;
             private Location west;
@@ -50,13 +57,20 @@ public class SantaMapTest {
                 easternLocation.west = location;
                 location.east = easternLocation;
             }
+
+            public static void fromLocationToSouth(Location southernLocation) {
+                Location location = new Location();
+                southernLocation.north = location;
+                location.south = southernLocation;
+            }
         }
 
         private Location currentLocation = new Location();
 
         private int uniquePlaces = 1;
+
         public void moveEast() {
-            if(currentLocation.east == null) {
+            if (currentLocation.east == null) {
                 Location.fromLocationToWest(currentLocation);
                 uniquePlaces++;
             }
@@ -68,11 +82,23 @@ public class SantaMapTest {
         }
 
         public void moveWest() {
-            if(currentLocation.west == null) {
+            if (currentLocation.west == null) {
                 Location.fromLocationToEast(currentLocation);
                 uniquePlaces++;
             }
             currentLocation = currentLocation.west;
+        }
+
+        public void moveNorth() {
+            if (currentLocation.north == null) {
+                Location.fromLocationToSouth(currentLocation);
+                uniquePlaces++;
+            }
+            currentLocation = currentLocation.west;
+        }
+
+        public void moveSouth() {
+
         }
     }
 }
