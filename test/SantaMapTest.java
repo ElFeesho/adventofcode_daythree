@@ -1,5 +1,8 @@
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -61,74 +64,78 @@ public class SantaMapTest {
 
 
         private static class Location {
-            private Location north;
-            private Location south;
-            private Location west;
-            private Location east;
+            private int originX = 0;
+            private int originY = 0;
 
-            public static void fromLocationToWest(Location westernLocation) {
-                Location location = new Location();
-                westernLocation.east = location;
-                location.west = westernLocation;
+            @Override
+            public int hashCode() {
+                return (originX + "," + originY).hashCode();
             }
 
-            public static void fromLocationToEast(Location easternLocation) {
-                Location location = new Location();
-                easternLocation.west = location;
-                location.east = easternLocation;
+            @Override
+            public boolean equals(Object obj) {
+                return obj instanceof Location && ((Location) obj).originX == originX && ((Location) obj).originY == originY;
             }
 
-            public static void fromLocationToSouth(Location southernLocation) {
+            public Location east() {
                 Location location = new Location();
-                southernLocation.north = location;
-                location.south = southernLocation;
+                location.originX = originX + 1;
+                location.originY = originY;
+                return location;
             }
 
-            public static void fromLocationToNorth(Location northernLocation) {
+            public Location west() {
                 Location location = new Location();
-                northernLocation.south = location;
-                location.north = northernLocation;
+                location.originX = originX - 1;
+                location.originY = originY;
+                return location;
+            }
+
+            public Location north() {
+                Location location = new Location();
+                location.originX = originX;
+                location.originY = originY + 1;
+                return location;
+            }
+
+            public Location south() {
+                Location location = new Location();
+                location.originX = originX;
+                location.originY = originY - 1;
+                return location;
             }
         }
 
         private Location currentLocation = new Location();
 
-        private int uniquePlaces = 1;
+        private Set<Location> knownLocations = new HashSet<>();
+
+        public SantaMap() {
+            knownLocations.add(currentLocation);
+        }
 
         public void moveEast() {
-            if (currentLocation.east == null) {
-                Location.fromLocationToWest(currentLocation);
-                uniquePlaces++;
-            }
-            currentLocation = currentLocation.east;
+            currentLocation = currentLocation.east();
+            knownLocations.add(currentLocation);
         }
 
         public int uniquePlaces() {
-            return uniquePlaces;
+            return knownLocations.size();
         }
 
         public void moveWest() {
-            if (currentLocation.west == null) {
-                Location.fromLocationToEast(currentLocation);
-                uniquePlaces++;
-            }
-            currentLocation = currentLocation.west;
+            currentLocation = currentLocation.west();
+            knownLocations.add(currentLocation);
         }
 
         public void moveNorth() {
-            if (currentLocation.north == null) {
-                Location.fromLocationToSouth(currentLocation);
-                uniquePlaces++;
-            }
-            currentLocation = currentLocation.north;
+            currentLocation = currentLocation.north();
+            knownLocations.add(currentLocation);
         }
 
         public void moveSouth() {
-            if (currentLocation.south == null) {
-                Location.fromLocationToNorth(currentLocation);
-                uniquePlaces++;
-            }
-            currentLocation = currentLocation.south;
+            currentLocation = currentLocation.south();
+            knownLocations.add(currentLocation);
         }
     }
 }
