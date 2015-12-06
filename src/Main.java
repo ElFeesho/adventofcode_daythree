@@ -4,7 +4,9 @@ public class Main {
     {
         ElfNavigator navigator = new ElfNavigator();
         SantaMap santaMap = new SantaMap();
-        navigator.sendInstructions(ADVENT_INPUT, santaMap);
-        System.out.println("Santa visited: "+santaMap.uniquePlaces());
+        SantaMap roboSantaMap = new SantaMap();
+
+        navigator.sendInstructions(ADVENT_INPUT, santaMap, roboSantaMap);
+        System.out.println("Santa visited: "+santaMap.combinedWith(roboSantaMap).uniquePlaces());
     }
 }
