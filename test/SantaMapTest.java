@@ -46,6 +46,17 @@ public class SantaMapTest {
         assertThat(santaMap.uniquePlaces(), is(3));
     }
 
+
+    @Test
+    public void loopsDoNotCountAsUnique() {
+        SantaMap santaMap = new SantaMap();
+        santaMap.moveNorth();
+        santaMap.moveEast();
+        santaMap.moveSouth();
+        santaMap.moveWest();
+        assertThat(santaMap.uniquePlaces(), is(4));
+    }
+
     public static class SantaMap {
 
 
