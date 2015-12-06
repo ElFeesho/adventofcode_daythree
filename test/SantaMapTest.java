@@ -60,6 +60,18 @@ public class SantaMapTest {
         assertThat(santaMap.uniquePlaces(), is(4));
     }
 
+    @Test
+    public void santaMapCanBeNavigatedByElf()
+    {
+        // Radio waves are an implementation detail.
+        String input = ">v<<^>";
+        SantaMap santaMap = new SantaMap();
+        ElfNavigator elfNavigator = new ElfNavigator();
+        elfNavigator.sendInstructions(input, santaMap);
+        assertThat(santaMap.uniquePlaces(), is(6));
+    }
+
+
     public static class SantaMap {
 
 
@@ -136,6 +148,29 @@ public class SantaMapTest {
         public void moveSouth() {
             currentLocation = currentLocation.south();
             knownLocations.add(currentLocation);
+        }
+    }
+
+    public static class ElfNavigator {
+        public void sendInstructions(String input, SantaMap santaMap) {
+            for (char c : input.toCharArray()) {
+                if(c == '>')
+                {
+                    santaMap.moveEast();
+                }
+                else if(c == '<')
+                {
+                    santaMap.moveWest();
+                }
+                else if(c == 'v')
+                {
+                    santaMap.moveSouth();
+                }
+                else if(c == '^')
+                {
+                    santaMap.moveNorth();
+                }
+            }
         }
     }
 }
