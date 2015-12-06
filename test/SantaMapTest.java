@@ -37,6 +37,15 @@ public class SantaMapTest {
         assertThat(santaMap.uniquePlaces(), is(2));
     }
 
+    @Test
+    public void whenSantaNavigatesNorth_andThenSouthTwice_santaHasVisitedThreePlaces() {
+        SantaMap santaMap = new SantaMap();
+        santaMap.moveNorth();
+        santaMap.moveSouth();
+        santaMap.moveSouth();
+        assertThat(santaMap.uniquePlaces(), is(3));
+    }
+
     public static class SantaMap {
 
 
@@ -62,6 +71,12 @@ public class SantaMapTest {
                 Location location = new Location();
                 southernLocation.north = location;
                 location.south = southernLocation;
+            }
+
+            public static void fromLocationToNorth(Location northernLocation) {
+                Location location = new Location();
+                northernLocation.south = location;
+                location.north = northernLocation;
             }
         }
 
@@ -94,11 +109,15 @@ public class SantaMapTest {
                 Location.fromLocationToSouth(currentLocation);
                 uniquePlaces++;
             }
-            currentLocation = currentLocation.west;
+            currentLocation = currentLocation.north;
         }
 
         public void moveSouth() {
-
+            if (currentLocation.south == null) {
+                Location.fromLocationToNorth(currentLocation);
+                uniquePlaces++;
+            }
+            currentLocation = currentLocation.south;
         }
     }
 }
