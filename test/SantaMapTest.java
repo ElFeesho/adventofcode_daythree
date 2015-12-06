@@ -14,12 +14,13 @@ public class SantaMapTest {
     }
 
     public class SantaMap {
+        private int uniquePlaces = 1;
         public void moveEast() {
-
+            uniquePlaces++;
         }
 
         public int uniquePlaces() {
-            return 0;
+            return uniquePlaces;
         }
     }
 }
