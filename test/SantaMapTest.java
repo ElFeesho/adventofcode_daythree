@@ -69,4 +69,32 @@ public class SantaMapTest {
     }
 
 
+    @Test
+    public void multipleSantaMapsCanBeNavigatedByElfTakingTurnsOnInstruction()
+    {
+        // Radio waves are an implementation detail.
+        String input = "><><";
+        SantaMap santaMap = new SantaMap();
+        SantaMap secondSantaMap = new SantaMap();
+        ElfNavigator elfNavigator = new ElfNavigator();
+        elfNavigator.sendInstructions(input, santaMap, secondSantaMap);
+        assertThat(santaMap.uniquePlaces(), is(3));
+        assertThat(secondSantaMap.uniquePlaces(), is(3));
+    }
+
+    @Test
+    public void multipleSantaMapsCanBeCombinedToDetermineTotalUniquePlacesVisited()
+    {
+
+        // Radio waves are an implementation detail.
+        String input = "><><";
+        SantaMap santaMap = new SantaMap();
+        SantaMap secondSantaMap = new SantaMap();
+        ElfNavigator elfNavigator = new ElfNavigator();
+        elfNavigator.sendInstructions(input, santaMap, secondSantaMap);
+        assertThat(santaMap.uniquePlaces(), is(3));
+        assertThat(secondSantaMap.uniquePlaces(), is(3));
+        assertThat(santaMap.combinedWith(secondSantaMap).uniquePlaces(), is(5));
+    }
+
 }

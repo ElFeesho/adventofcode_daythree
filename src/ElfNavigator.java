@@ -1,6 +1,8 @@
 public class ElfNavigator {
-    public void sendInstructions(String input, SantaMap santaMap) {
+    public void sendInstructions(String input, SantaMap... santaMaps) {
+        int santaMapIndex = 0;
         for (char c : input.toCharArray()) {
+            SantaMap santaMap = santaMaps[santaMapIndex];
             if(c == '>')
             {
                 santaMap.moveEast();
@@ -16,6 +18,11 @@ public class ElfNavigator {
             else if(c == '^')
             {
                 santaMap.moveNorth();
+            }
+            santaMapIndex++;
+            if (santaMapIndex >= santaMaps.length)
+            {
+                santaMapIndex = 0;
             }
         }
     }

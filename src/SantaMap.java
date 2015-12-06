@@ -4,6 +4,13 @@ import java.util.Set;
 public class SantaMap {
 
 
+    public SantaMap combinedWith(SantaMap secondSantaMap) {
+        SantaMap newMap = new SantaMap();
+        newMap.knownLocations.addAll(knownLocations);
+        newMap.knownLocations.addAll(secondSantaMap.knownLocations);
+        return newMap;
+    }
+
     private static class Location {
         private int originX = 0;
         private int originY = 0;
